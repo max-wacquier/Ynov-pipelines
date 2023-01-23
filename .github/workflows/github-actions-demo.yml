@@ -52,4 +52,3 @@ jobs:
     steps:
       - name: Deployment
         run: echo "ready to deploy"
-        run: ping google.com
