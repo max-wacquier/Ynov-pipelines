@@ -9,7 +9,7 @@ on:
 
 jobs:
   unit-test:
-
+    needs: lint-test
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
@@ -20,7 +20,8 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install pytest
+      - name: Install python and pytest
+        run: python -m pip install --upgrade pip
         run: pip install pytest
       - name: Run unit tests
         run: pytest tools.py --doctest-modules
@@ -35,6 +36,7 @@ jobs:
         run: flake8 app.py
 
   git-setting-zip:
+    needs: unit-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -60,7 +62,15 @@ jobs:
           git push
           
   deploy:
+    needs: git-setting-zip
     runs-on: ubuntu-latest
     steps:
       - name: Deployment
         run: echo "ready to deploy"
+
+  message:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send message
+        run: echo "pipeline launched"
