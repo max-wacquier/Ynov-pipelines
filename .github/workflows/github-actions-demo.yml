@@ -72,7 +72,6 @@ jobs:
           python-version: '3.10.9'
       - name: coverage
         run: |
-          git checkout "release-$(date +"%Y-%m-%d")"
           pip install pytest-cov
           pip install coverage-badge
           pytest --cov=. . --doctest-modules --ignore=app.py
