@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install pytest
+        run: pip install pytest
+      - name: Run unit tests
+        run: pytest tools.py --doctest-modules
+
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install flake8
+        run: pip install flake8
+      - name: Run lint tests
+        run: flake8 app.py
+
+  git-setting-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure git user
+        run: |
+          git config user.email "${{ secrets.GITHUB_USER_EMAIL }}"
+          git config user.name "${{ secrets.GITHUB_USER_NAME }}"
+      - name: Create release branch
+        run: |
+          git branch -D "release-$(date +"%Y-%m-%d")"
+          git checkout -b "release-$(date +"%Y-%m-%d")"
+          git push -u origin "release-$(date +"%Y-%m-%d")"
+      - name: Zip files
+        run: |
+          pip install zip_files
+          python zip.py
+          git add .
+          git commit -m "ajout de l'archive"
+          git push
+          
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment
+        run: echo "ready to deploy"
+        run: ping google.com
