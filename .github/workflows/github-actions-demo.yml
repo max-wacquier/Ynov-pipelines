@@ -75,7 +75,7 @@ jobs:
           pip install pytest-cov
           pip install coverage-badge
           pytest --cov=. . --doctest-modules --ignore=app.py
-          coverage-badge >> readme.md
+          coverage-badge >> README.md
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git add .
