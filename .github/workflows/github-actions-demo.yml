@@ -45,6 +45,8 @@ jobs:
         run: |
           pip install zip_files
           python zip.py
+          git config user.email "${{ secrets.USER_EMAIL }}"
+          git config user.name "${{ secrets.USER_NAME }}"
           git add .
           git commit -m "ajout de l'archive"
           git push
