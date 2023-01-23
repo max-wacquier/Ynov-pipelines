@@ -70,8 +70,8 @@ jobs:
         run: echo "ready to deploy"
 
   message:
-    needs: deploy
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     steps:
       - name: Send message
         run: echo "pipeline launched"
