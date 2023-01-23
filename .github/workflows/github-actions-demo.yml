@@ -83,7 +83,7 @@ jobs:
           git push
           
   deploy:
-    needs: git-setting-zip
+    needs: code-coverage
     runs-on: ubuntu-latest
     steps:
       - name: Deployment
