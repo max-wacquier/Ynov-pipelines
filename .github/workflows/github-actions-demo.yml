@@ -61,6 +61,26 @@ jobs:
           git add .
           git commit -m "ajout de l'archive"
           git push
+
+  code-coverage:
+    needs: git-setting-zip
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.9'
+      - name: coverage
+        run: |
+          pip install pytest-cov
+          pip install coverage-badge
+          pytest --cov=. . --doctest-modules --ignore=app.py
+          coverage-badge >> readme.md
+          git config user.email "${{ secrets.USER_EMAIL }}"
+          git config user.name "${{ secrets.USER_NAME }}"
+          git add .
+          git commit -m "ajout du badge de couverture dans le readme.md"
+          git push
           
   deploy:
     needs: git-setting-zip
@@ -71,7 +91,7 @@ jobs:
 
   message:
     runs-on: ubuntu-latest
-    if: ${{ always() }}
+    if: always()
     needs: deploy
     steps:
       - name: Send message
