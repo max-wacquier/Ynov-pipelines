@@ -72,6 +72,7 @@ jobs:
   message:
     runs-on: ubuntu-latest
     if: ${{ always() }}
+    needs: deploy
     steps:
       - name: Send message
         run: echo "pipeline launched"
