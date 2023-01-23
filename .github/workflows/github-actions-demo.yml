@@ -38,7 +38,6 @@ jobs:
         run: |
           git checkout -b "release-$(date +"%Y-%m-%d")"
           git push -u origin "release-$(date +"%Y-%m-%d")"
-          git push --set-upstream "release-"$(date +"%Y-%m-%d")
       - name: Zip files
         run: |
           pip install zip_files
