@@ -83,6 +83,7 @@ jobs:
           git push
           
   deploy:
+    environnement: prod
     needs: code-coverage
     runs-on: ubuntu-latest
     steps:
